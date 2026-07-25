@@ -6,16 +6,16 @@
 <style>
 body {
   margin: 0;
-  background: linear-gradient(#222, #555);
+  background: #111;
   color: white;
   text-align: center;
   font-family: Arial;
 }
 
 #game {
-  width: 350px;
+  width: 360px;
   height: 600px;
-  background: #333;
+  background: linear-gradient(#1e90ff, #333);
   margin: auto;
   position: relative;
   overflow: hidden;
@@ -24,11 +24,11 @@ body {
 #player {
   width: 50px;
   height: 80px;
-  background: cyan;
+  background: #00ffff;
   position: absolute;
-  bottom: 20px;
-  left: 150px;
-  border-radius: 10px;
+  bottom: 30px;
+  left: 155px;
+  border-radius: 15px;
 }
 
 .coin {
@@ -41,13 +41,6 @@ body {
 
 #info {
   font-size: 20px;
-  margin: 10px;
-}
-
-button {
-  padding: 10px;
-  margin: 5px;
-  font-size: 18px;
 }
 </style>
 
@@ -58,40 +51,89 @@ button {
 <h1>🏃 Vortex Run</h1>
 
 <div id="info">
-🪙 Moedas: <span id="coins">999999</span>
-🔑 Chaves: <span id="keys">999999</span>
-🚀 Foguetes: ∞
+🪙 Moedas: <span id="score">0</span>
 </div>
 
 <div id="game">
 <div id="player"></div>
 </div>
 
-<button onclick="left()">⬅️</button>
-<button onclick="right()">➡️</button>
+<br>
+
+<button onclick="moveLeft()">⬅️</button>
+<button onclick="moveRight()">➡️</button>
 
 <script>
 
 let player = document.getElementById("player");
-let pos = 150;
+let scoreText = document.getElementById("score");
 
-function left(){
- if(pos > 20){
-  pos -= 50;
-  player.style.left = pos+"px";
+let lane = 1;
+let score = 0;
+
+let lanes = [55,155,255];
+
+function updatePlayer(){
+ player.style.left = lanes[lane]+"px";
+}
+
+function moveLeft(){
+ if(lane > 0){
+  lane--;
+  updatePlayer();
  }
 }
 
-function right(){
- if(pos < 280){
-  pos += 50;
-  player.style.left = pos+"px";
+function moveRight(){
+ if(lane < 2){
+  lane++;
+  updatePlayer();
  }
 }
 
-// moedas infinitas de teste
-let coins = 999999;
-let keys = 999999;
+
+function createCoin(){
+
+ let coin = document.createElement("div");
+ coin.className="coin";
+
+ let randomLane = Math.floor(Math.random()*3);
+
+ coin.style.left = lanes[randomLane]+"px";
+ coin.style.top="0px";
+
+ document.getElementById("game").appendChild(coin);
+
+
+ let move = setInterval(()=>{
+
+  let y = parseInt(coin.style.top);
+  coin.style.top = y + 5 + "px";
+
+
+  if(y > 560){
+   coin.remove();
+   clearInterval(move);
+  }
+
+
+  let playerX = player.offsetLeft;
+  let coinX = coin.offsetLeft;
+
+
+  if(y > 500 && playerX == coinX){
+   score++;
+   scoreText.innerHTML = score;
+   coin.remove();
+   clearInterval(move);
+  }
+
+ },30);
+
+}
+
+
+setInterval(createCoin,1500);
 
 </script>
 
