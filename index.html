@@ -6,41 +6,39 @@
 <style>
 body {
   margin: 0;
-  background: #111;
+  height: 100vh;
+  background: linear-gradient(#111, #0066ff);
   color: white;
-  text-align: center;
   font-family: Arial;
+  text-align: center;
 }
 
-#game {
-  width: 360px;
-  height: 600px;
-  background: linear-gradient(#1e90ff, #333);
-  margin: auto;
-  position: relative;
-  overflow: hidden;
+h1 {
+  font-size: 50px;
+  margin-top: 80px;
+  color: #00ffff;
+  text-shadow: 3px 3px #000;
 }
 
-#player {
-  width: 50px;
-  height: 80px;
-  background: #00ffff;
-  position: absolute;
-  bottom: 30px;
-  left: 155px;
+button {
+  display: block;
+  margin: 20px auto;
+  width: 250px;
+  padding: 18px;
+  font-size: 25px;
   border-radius: 15px;
+  border: none;
+  background: #00ffff;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-.coin {
-  width: 25px;
-  height: 25px;
-  background: gold;
-  border-radius: 50%;
-  position: absolute;
+button:hover {
+  background: yellow;
 }
 
-#info {
-  font-size: 20px;
+#coins {
+  font-size: 25px;
 }
 </style>
 
@@ -48,92 +46,40 @@ body {
 
 <body>
 
-<h1>🏃 Vortex Run</h1>
+<h1>🏃 VORTEX RUN</h1>
 
-<div id="info">
-🪙 Moedas: <span id="score">0</span>
-</div>
-
-<div id="game">
-<div id="player"></div>
+<div id="coins">
+🪙 Moedas: ∞  
+<br>
+🔑 Chaves: ∞
 </div>
 
 <br>
 
-<button onclick="moveLeft()">⬅️</button>
-<button onclick="moveRight()">➡️</button>
+<button onclick="jogar()">🎮 JOGAR</button>
+
+<button onclick="personagens()">
+👤 PERSONAGENS
+</button>
+
+<button onclick="loja()">
+🛒 LOJA
+</button>
+
 
 <script>
 
-let player = document.getElementById("player");
-let scoreText = document.getElementById("score");
-
-let lane = 1;
-let score = 0;
-
-let lanes = [55,155,255];
-
-function updatePlayer(){
- player.style.left = lanes[lane]+"px";
+function jogar(){
+ alert("Corrida iniciando...");
 }
 
-function moveLeft(){
- if(lane > 0){
-  lane--;
-  updatePlayer();
- }
+function personagens(){
+ alert("Tela de personagens em breve!");
 }
 
-function moveRight(){
- if(lane < 2){
-  lane++;
-  updatePlayer();
- }
+function loja(){
+ alert("Loja em breve!");
 }
-
-
-function createCoin(){
-
- let coin = document.createElement("div");
- coin.className="coin";
-
- let randomLane = Math.floor(Math.random()*3);
-
- coin.style.left = lanes[randomLane]+"px";
- coin.style.top="0px";
-
- document.getElementById("game").appendChild(coin);
-
-
- let move = setInterval(()=>{
-
-  let y = parseInt(coin.style.top);
-  coin.style.top = y + 5 + "px";
-
-
-  if(y > 560){
-   coin.remove();
-   clearInterval(move);
-  }
-
-
-  let playerX = player.offsetLeft;
-  let coinX = coin.offsetLeft;
-
-
-  if(y > 500 && playerX == coinX){
-   score++;
-   scoreText.innerHTML = score;
-   coin.remove();
-   clearInterval(move);
-  }
-
- },30);
-
-}
-
-
-setInterval(createCoin,1500);
 
 </script>
 
